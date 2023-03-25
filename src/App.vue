@@ -24,7 +24,7 @@ export default {
     const res = await fetch(`${apiURL}${apiKey}`)
     const { data } = await res.json()
     this.blinds = data
-    console.log(this.blinds)
+    console.log(this.blinds.products)
   },
 }
 </script>

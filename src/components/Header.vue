@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid p-3 bg-light text-center">
-            <h2 id="header-title">BLINDS DIRECT</h2>
-            <h6 id="#header-title-sub" class="mb-3 mt-0">DEFIND BY QUALITY</h6>
+            <h1 id="header-title">BLINDS DIRECT</h1>
+            <h6 id="#header-title-sub" class="mb-3 mt-0">DEFINED BY QUALITY</h6>
             <div class="container border-top border-bottom p-3">
                 <p class="">{{ blinds.description }}</p>
             </div>
@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style scoped>
-    #header-title, #header-title-sub{
+    h1, h6{
         font-family: 'serif';
     }
 </style>

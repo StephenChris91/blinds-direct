@@ -7,14 +7,11 @@
   </template>  
 
 <script>
-import Blinds from './Blinds.vue'
+import Blinds from './Blinds.vue';
     export default {
         name: 'BlindsList',
         props: {
-        blindsList: {
-        type: Array,
-        required: true
-        }
+        blindsList: Array,
     },
         components: {
             Blinds,

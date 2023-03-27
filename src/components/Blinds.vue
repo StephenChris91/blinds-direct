@@ -2,20 +2,20 @@
   <div class="card" style="width: 18rem;">
     <b-card-img :src="blind.images.main" class="card-img-top" :alt="blind.name"></b-card-img>
     <div class="card-body text-center">
-      <p class="card-text">From {{ blind.price_per_metre_squared }}</p>
+      <p class="card-text">From {{`£${calculateFromPrice()}`}}</p>
       <b-button variant="primary" class="d-block" @click="showModal = true">Get Price</b-button>
     </div>
-    <b-modal v-model="showModal" size="lg" centered>
+    <b-modal v-model="showModal" size="lg" centered hide-footer="true">
       <div class="d-flex justify-content-between row">
-        <div class="col-lg-4">
-          <img style="max-height: 300px; width: auto;" :src="blind.images.thumb" class="card-img-top" :alt="blind.name">
+        <div class="col-lg-4 col-sm-12 col-md-6">
+          <img style="max-height: 600px; width: auto;" :src="blind.images.thumb" class="card-img-top mx-auto" :alt="blind.name">
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-7 col-sm-12">
           <h2 class="card-title mb-1">{{ blind.name }}</h2>
           <p>{{ blind.description }}</p>
-          <div class="mt-3">
+          <div class="mt-3 ">
             <h6 class="text-bold">Enter Measurements to get a price</h6>
-            <div class="d-flex gap-2">
+            <div class="d-flex gap-2 mb-3">
               <div class="mr-3">
                 <b-form-input type="number" v-model="width" placeholder="Width (cm)" @input="validateWidth"></b-form-input>
                 <div class="text-danger">{{ widthError }}</div>
@@ -27,13 +27,12 @@
             </div>
             <div v-if="!isValid" class="text-danger"></div>
             <h1 v-else-if="calculatedPrice" class="text-success text-center">{{`£${calculatedPrice}`}}</h1>
+            <div v-if="isValid">
+              <b-button variant="primary" class="d-block" @click="addToBasket; resetModal">Add to basket</b-button>
+            </div>
           </div>
         </div>
       </div>
-      <template v-if="isValid" v-slot:modal-footer="{}">
-        <b-button variant="primary" @click="addToBasket; resetModal">Add to basket</b-button>
-        <b-button variant="outline-primary" @click="resetModal">Cancel</b-button>
-      </template>
     </b-modal>
   </div>
 </template>
@@ -55,18 +54,19 @@ export default {
     };
   },
   computed: {
+    
     calculatedPrice() {
       const { width, drop } = this;
       if (!width || !drop) return null;
-      const price = this.blind.price_per_metre_squared;
-      const pricePerSquareMeter = price / (this.blind.limits.width.min * this.blind.limits.drop.min);
-      const area = (width / 100) * (drop / 100);
-      const calculatedPrice = area * pricePerSquareMeter;
-      return calculatedPrice.toFixed(2);
-    },
+      const inputedNum = (width / 100) * (drop / 100);
+      const price = inputedNum * this.blind.price_per_metre_squared;
+      return price.toFixed(2);
+  },
+    
     isValid() {
-      return this.width && this.drop && !this.widthError && !this.dropError;
-    },
+    return this.width && this.drop && !this.widthError && !this.dropError;
+  },
+  
   },
   methods: {
     addToBasket() {
@@ -94,6 +94,10 @@ export default {
       } else {
         this.dropError = '';
       }
+    },
+    calculateFromPrice(){
+     const fromPrice = this.blind.price_per_metre_squared * (this.blind.limits.width.min * this.blind.limits.drop.min) / 10000
+     return fromPrice.toFixed(2)
     },
     calculatePrice() {
       const { width, drop } = this;

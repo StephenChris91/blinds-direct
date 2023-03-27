@@ -1,6 +1,8 @@
 <template>
-  <Header :blinds="blinds"/>
-  <BlindsList :blindsList="blinds.products"/>
+  <div>
+    <Header :blinds="blinds"/>
+    <BlindsList :blindsList="blinds.products"/>
+  </div>
 </template>
 
 <script>
